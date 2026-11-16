@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Menu</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 60%;
+    }
+
+    th, td {
+      border: 1px solid black;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #eeeeee;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Food Menu</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Food</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody id="foodTable"></tbody>
+  </table>
+
+  <p>Student project for demonstration of web development skills only.</p>
+
+  <script>
+    // Fetch food items from the backend.
+    async function loadFoods() {
+      try {
+        const response = await fetch("/foods");
+
+        if (!response.ok) {
+          throw new Error("Failed to load foods");
+        }
+
+        const foods = await response.json();
+        const table = document.getElementById("foodTable");
+
+        // Add each food item to the table.
+        foods.forEach(food => {
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+            <td>${food.id}</td>
+            <td>${food.name}</td>
+            <td>$${food.price.toFixed(2)}</td>
+          `;
+
+          table.appendChild(row);
+        });
+      } catch (error) {
+        console.error("Error loading foods:", error);
+      }
+    }
+
+    // Load the foods when the page opens.
+    loadFoods();
+  </script>
+
+</body>
+</html>
